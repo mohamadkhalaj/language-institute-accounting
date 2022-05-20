@@ -28,9 +28,9 @@ class Student(db.Model):
     date_birth = db.Column(db.DateTime, default=datetime.utcnow())
     email = db.Column(db.String(255), nullable=False)
 
-    account = db.relationship("StudentAccount", backref="student", lazy=True)
+    accounts = db.relationship("StudentAccount", backref="student", lazy=True)
 
-    payment = db.relationship("Payment", backref="student", lazy=True)
+    payments = db.relationship("Payment", backref="student", lazy=True)
 
 
 class StudentAccount(db.Model):
@@ -51,9 +51,9 @@ class Teacher(db.Model):
     phone_number = db.Column(db.String(15), nullable=False)
     email = db.Column(db.String(255), nullable=False)
 
-    account = db.relationship("TeacherAccount", backref="teacher", lazy=True)
+    accounts = db.relationship("TeacherAccount", backref="teacher", lazy=True)
 
-    teacher_class = db.relationship("Class", backref="teacher", lazy=True)
+    teacher_classes = db.relationship("Class", backref="teacher", lazy=True)
 
 
 class TeacherAccount(db.Model):
@@ -74,7 +74,7 @@ class Staff(db.Model):
     phone_number = db.Column(db.String(15), nullable=False)
     email = db.Column(db.String(255))
 
-    account = db.relationship("StaffAccount", backref="staff", lazy=True)
+    accounts = db.relationship("StaffAccount", backref="staff", lazy=True)
 
 
 class StaffAccount(db.Model):
@@ -118,7 +118,7 @@ class Course(db.Model):
     description = db.Column(db.String(300), nullable=False)
     term = db.Column(db.String(255), nullable=False)
 
-    course_class = db.relationship("Class", backref="course", lazy=True)
+    course_classes = db.relationship("Class", backref="course", lazy=True)
 
     category_id = db.Column(db.Integer, db.ForeignKey(
         "category.id"), nullable=False)
@@ -156,8 +156,7 @@ class_week_days = db.Table('class_week_day',
                            db.Column('class_weekday_id', db.Integer, db.ForeignKey(
                                'class_weekday.id'), primary_key=True),
                            db.Column('class_id', db.Integer, db.ForeignKey(
-                               'class.id'), primary_key=True),
-                           db.Column('hour', db.String(255), nullable=False)
+                               'class.id'), primary_key=True)
                            )
 
 class_students = db.Table('class_student',
@@ -179,7 +178,7 @@ class Class(db.Model):
                                backref=db.backref('classes', lazy=True))
 
     students = db.relationship('Student', secondary=class_students, lazy='subquery',
-                               backref=db.backref('students', lazy=True))
+                               backref=db.backref('classes', lazy=True))
 
     teacher_id = db.Column(db.Integer, db.ForeignKey(
         "teacher.id"), nullable=False)
@@ -191,3 +190,4 @@ class Class(db.Model):
 class ClassWeekday(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
+    hour = db.Column(db.String(255), nullable=False)
