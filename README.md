@@ -2,6 +2,7 @@
 
 # Run
 First make sure that ms sql server is up!
+If you dont have sql sever make sure DEBUG='True' is set in .env file, then ots connect to sqlite.
 ```
 pip3 install -r requirements.txt
 export FLASK_APP='models.py'
@@ -14,9 +15,15 @@ If you don't have ms sql server installed on your system, you can use container 
 ```
 docker-compose up
 ```
+```
 default username: sa
 default password: Admin12345
 port: 1433
+```
 
 # Usage
-Some CRUD sample codes are wrote in 'sample-query.py' file.
+After migrating database run below command for inserting sample records:
+```
+python3 sample_data.py
+```
+All of possible queries are in 'queries.py' file.
