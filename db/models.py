@@ -9,11 +9,14 @@ db = SQLAlchemy()
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = env("SECRET_KEY")
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mssql+pymssql://{env("DB_USER")}:{env("DB_PASSWORD")}@{env("DB_HOST")}?charset=utf8'
+database_path = 'sqlite:///db.sqlite' if env(
+    "DEBUG") else f'mssql+pymssql://{env("DB_USER")}:{env("DB_PASSWORD")}@{env("DB_HOST")}?charset=utf8'
+app.config['SQLALCHEMY_DATABASE_URI'] = database_path
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 migrate = Migrate(app, db)
 db.init_app(app)
+app.app_context().push()
 
 
 class Student(db.Model):
@@ -35,8 +38,8 @@ class Student(db.Model):
 
 class StudentAccount(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    is_active = db.Column(db.Boolean, nullable=False)
-    login = db.Column(db.String(255), nullable=False)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
+    login = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
 
     student_id = db.Column(db.Integer, db.ForeignKey(
@@ -58,8 +61,8 @@ class Teacher(db.Model):
 
 class TeacherAccount(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    is_active = db.Column(db.Boolean, nullable=False)
-    login = db.Column(db.String(255), nullable=False)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
+    login = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
 
     teacher_id = db.Column(db.Integer, db.ForeignKey(
@@ -79,8 +82,8 @@ class Staff(db.Model):
 
 class StaffAccount(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    is_active = db.Column(db.Boolean, nullable=False)
-    login = db.Column(db.String(255), nullable=False)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
+    login = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
 
     staff_id = db.Column(db.Integer, db.ForeignKey(
