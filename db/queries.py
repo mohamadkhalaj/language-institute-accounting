@@ -72,6 +72,7 @@ def get_staff_by_name(name):
 
 
 # serach by first_name and last_name in teachers and staffs and students tables.
+
 def search_by_name_in_all_tables(name):
     return models.Teacher.query.filter(models.Teacher.first_name.like(
         '%' + name + '%') | models.Teacher.last_name.like(
@@ -83,6 +84,7 @@ def search_by_name_in_all_tables(name):
 
 
 # check student by login and password.
+
 def check_student_login(login, password):
     return models.StudentAccount.query.filter(
         login == login,
@@ -90,6 +92,7 @@ def check_student_login(login, password):
 
 
 # check staff by login and password.
+
 def check_staff_login(login, password):
     return models.StaffAccount.query.filter(
         login == login,
@@ -97,6 +100,7 @@ def check_staff_login(login, password):
 
 
 # check teacher by login and password.
+
 def check_teacher_login(login, password):
     return models.TeacherAccount.query.filter(
         login == login,
@@ -104,6 +108,7 @@ def check_teacher_login(login, password):
 
 
 # Get student classs by student id.
+
 def get_student_classes(student_id):
     return models.Class.query.filter(student_id == student_id).all()
 
@@ -245,6 +250,24 @@ def get_students_pending_payments(student_id):
 def get_class_duration(class_id):
     class_ = models.Class.query.filter(class_id == class_id).first()
     return class_.end_time - class_.start_time
+
+# Get all pending payments.
+
+
+def get_all_pending_payments():
+    return models.Payment.query.filter(status="Pending").all()
+
+# Get all completed payments.
+
+
+def get_all_completed_payments():
+    return models.Payment.query.filter(status="Completed").all()
+
+# Get all cancelled payments.
+
+
+def get_all_cancelled_payments():
+    return models.Payment.query.filter(status="Cancelled").all()
 
 # Update student.
 
