@@ -1,7 +1,7 @@
 # language-institute-accounting
 
 # Run
-First make sure that ms sql server is up!\n
+First make sure that ms sql server is up! <br />
 If you dont have sql sever, make sure DEBUG='True' is set in '.env' file, then app will connect to sqlite.
 ```
 pip3 install -r requirements.txt
@@ -11,7 +11,7 @@ flask db init && flask db migrate && flask db upgrade
 ```
 
 # Docker
-If you don't have ms sql server installed on your system, you can use container \n
+If you don't have ms sql server installed on your system, you can use container <br />
 run below command:
 ```
 docker-compose up
